@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dashboard de Modelos</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <h2>Modelos Treinados</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nome</th>
+        <th>Algoritmo</th>
+        <th>Acurácia</th>
+        <th>F1-score</th>
+        <th>Data Treino</th>
+        <th>Parâmetros</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% models.forEach(model => { %>
+        <tr>
+          <td><%= model.id %></td>
+          <td><%= model.model_name %></td>
+          <td><%= model.algorithm_type %></td>
+          <td><%= model.accuracy %></td>
+          <td><%= model.f1_score %></td>
+          <td><%= model.training_date.toLocaleString() %></td>
+          <td><%= model.parameters %></td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+
+  <h2>Últimos Resultados de Classificação</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Tweet ID</th>
+        <th>Modelo</th>
+        <th>Sentimento Previsto</th>
+        <th>Confiança</th>
+        <th>Data</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% results.forEach(result => { %>
+        <tr>
+          <td><%= result.id %></td>
+          <td><%= result.tweet_id %></td>
+          <td><%= result.model_name %></td>
+          <td><%= result.predicted_sentiment %></td>
+          <td><%= result.confidence_score %></td>
+          <td><%= result.classification_date.toLocaleString() %></td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</body>
+</html>

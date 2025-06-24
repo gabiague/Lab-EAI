@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <title>Lista de Tweets - Lab EAI</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <h2>Lista de Tweets</h2>
+  <div class="container">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Sentimento</th>
+          <th>Confiança</th>
+          <th>Negativa?</th>
+          <th>Conf. Neg.</th>
+          <th>Companhia</th>
+          <th>Usuário</th>
+          <th>Retweets</th>
+          <th>Texto</th>
+          <th>Data</th>
+          <th>Localização</th>
+          <th>Detalhes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if (tweets && tweets.length > 0) { %>
+          <% tweets.forEach(tweet => { %>
+            <tr>
+              <td><%= tweet.tweet_id %></td>
+              <td><%= tweet.airline_sentiment %></td>
+              <td><%= tweet.airline_sentiment_confidence %></td>
+              <td><%= tweet.negativereason || '-' %></td>
+              <td><%= tweet.negativereason_confidence || '-' %></td>
+              <td><%= tweet.airline %></td>
+              <td><%= tweet.name %></td>
+              <td><%= tweet.retweet_count %></td>
+              <td title="<%= tweet.text %>">
+                <%= tweet.text.length > 50 ? tweet.text.substring(0, 50) + '...' : tweet.text %>
+              </td>
+              <td><%= tweet.tweet_created %></td>
+              <td><%= tweet.tweet_location || '-' %></td>
+              <td><a href="/tweet/<%= tweet.tweet_id %>">Ver</a></td>
+            </tr>
+          <% }) %>
+        <% } else { %>
+          <tr>
+            <td colspan="12">Nenhum tweet encontrado.</td>
+          </tr>
+        <% } %>
+      </tbody>
+    </table>
+    <div style="text-align:right;margin-top:10px;">
+      <a href="/dashboard">Ver Dashboard</a>
+    </div>
+  </div>
+</body>
+</html>
