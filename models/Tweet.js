@@ -1,15 +1,15 @@
 const db = require('../config/db');
 
-class Tweet {
-  static async getAll(limit = 100) {
-    const [rows] = await db.query(`SELECT * FROM tweets_airline LIMIT ?`, [limit]);
+const Tweet = {
+  async getAll() {
+    const [rows] = await db.query('SELECT * FROM tweets_airline ORDER BY tweet_created DESC');
     return rows;
+  },
+  async getById(id) {
+    // Use BIGINT para tweet_id!
+    const [rows] = await db.query('SELECT * FROM tweets_airline WHERE tweet_id = ?', [id]);
+    return rows[0] || null;
   }
-
-  static async getById(tweet_id) {
-    const [rows] = await db.query('SELECT * FROM tweets_airline WHERE tweet_id = ?', [tweet_id]);
-    return rows[0];
-  }
-}
+};
 
 module.exports = Tweet;

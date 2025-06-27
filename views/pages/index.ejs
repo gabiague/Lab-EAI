@@ -29,32 +29,33 @@
         <% if (tweets && tweets.length > 0) { %>
           <% tweets.forEach(tweet => { %>
             <tr>
-              <td><%= tweet.tweet_id %></td>
-              <td><%= tweet.airline_sentiment %></td>
-              <td><%= tweet.airline_sentiment_confidence %></td>
-              <td><%= tweet.negativereason || '-' %></td>
-              <td><%= tweet.negativereason_confidence || '-' %></td>
-              <td><%= tweet.airline %></td>
-              <td><%= tweet.name %></td>
-              <td><%= tweet.retweet_count %></td>
-              <td title="<%= tweet.text %>">
+              <td data-label="ID"><%= tweet.tweet_id %></td>
+              <td data-label="Sentimento"><%= tweet.airline_sentiment %></td>
+              <td data-label="Confiança"><%= tweet.airline_sentiment_confidence %></td>
+              <td data-label="Negativa?"><%= tweet.negativereason || '-' %></td>
+              <td data-label="Conf. Neg."><%= tweet.negativereason_confidence || '-' %></td>
+              <td data-label="Companhia"><%= tweet.airline %></td>
+              <td data-label="Usuário"><%= tweet.name %></td>
+              <td data-label="Retweets"><%= tweet.retweet_count %></td>
+              <td data-label="Texto" class="tweet-text" title="<%= tweet.text %>">
                 <%= tweet.text.length > 50 ? tweet.text.substring(0, 50) + '...' : tweet.text %>
               </td>
-              <td><%= tweet.tweet_created %></td>
-              <td><%= tweet.tweet_location || '-' %></td>
-              <td><a href="/tweet/<%= tweet.tweet_id %>">Ver</a></td>
+              <td data-label="Data"><%= tweet.tweet_created %></td>
+              <td data-label="Localização"><%= tweet.tweet_location || '-' %></td>
+              <td data-label="Detalhes">
+                <a class="details-link" href="/tweet/<%= tweet.tweet_id %>">Ver Detalhes</a>
+              </td>
             </tr>
           <% }) %>
         <% } else { %>
           <tr>
-            <td colspan="12">Nenhum tweet encontrado.</td>
+            <td colspan="12" style="text-align:center;color:#888;">Nenhum tweet encontrado.</td>
           </tr>
         <% } %>
       </tbody>
     </table>
-    <div style="text-align:right;margin-top:10px;">
-      <a href="/dashboard">Ver Dashboard</a>
-    </div>
+    <a class="dashboard-link" href="/dashboard">Ver Dashboard</a>
+    <div style="clear:both;"></div>
   </div>
 </body>
 </html>
