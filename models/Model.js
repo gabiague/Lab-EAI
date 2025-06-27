@@ -4,7 +4,8 @@ const stopword = require('stopword');
 const fs = require('fs');
 const path = require('path');
 
-const MODEL_PATH = path.join(__dirname, 'nb_model.json');
+// Caminho absoluto para o modelo Naive Bayes treinado
+const MODEL_PATH = path.join(__dirname, '..', 'models', 'nb_model.json');
 
 function preprocess(text) {
   let clean = text
@@ -67,6 +68,30 @@ class Model {
   static async getLastModelId() {
     const [rows] = await db.query('SELECT id FROM classification_models ORDER BY training_date DESC LIMIT 1');
     return rows.length > 0 ? rows[0].id : null;
+  }
+
+  // Corrigido: agora usa MODEL_PATH
+  static loadNBModel() {
+    if (!fs.existsSync(MODEL_PATH)) {
+      throw new Error('Modelo Naive Bayes não treinado. Execute o treinamento antes de classificar.');
+    }
+    const data = fs.readFileSync(MODEL_PATH);
+    return natural.BayesClassifier.restore(JSON.parse(data));
+  }
+
+  static classifyWithConfidence(text) {
+    const classifier = Model.loadNBModel();
+    const processedText = preprocess(text); // importante para coerência!
+    const result = classifier.getClassifications(processedText);
+    const total = result.reduce((sum, item) => sum + Math.exp(item.value), 0);
+    const normalized = result.map(item => ({
+      label: item.label,
+      value: Math.exp(item.value) / total
+    }));
+    const predicted = classifier.classify(processedText);
+    const confidenceObj = normalized.find(item => item.label === predicted);
+    const confidence = confidenceObj ? confidenceObj.value : null;
+    return { predictedSentiment: predicted, confidenceScore: confidence };
   }
 }
 
